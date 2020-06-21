@@ -99,4 +99,32 @@ router.put("/stories/:id", ensureAuth, async (req, res) => {
   }
 });
 
+// @desc    Delete Story
+// @route   DELETE /stories/:id
+router.delete("/stories/:id", ensureAuth, async (req, res) => {
+  try {
+    // app.js add urlencoded and json middlewares
+    // to convert request body into JSON
+    // and here add the logged in user's id into JSON body's "user" attribute
+
+    let story = await Story.findById(req.params.id).lean();
+    if (!story) {
+      return res.render("error/404");
+    }
+
+    // Verify story belongs to logged in user
+    if (story.user != req.user.id) {
+      // If no, redirect user to public stories page
+      res.redirect("/stories");
+    } else {
+      // If yes, delete story from mongoDB
+      story = await Story.findOneAndDelete({ _id: req.params.id });
+      res.redirect("/dashboard");
+    }
+  } catch (error) {
+    console.error(error);
+    res.render("error/500");
+  }
+});
+
 module.exports = router;
