@@ -19,6 +19,7 @@ router.get("/stories", ensureAuth, async (req, res) => {
       .sort({ createdAt: "desc" })
       .lean();
 
+    // pass the list of stories to hbs template
     res.render("stories/index", {
       stories,
     });

@@ -29,12 +29,16 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Handlebars Helpers
-const { formatDate } = require("./helpers/hbs");
+const { formatDate, truncate, stripTags, editIcon } = require("./helpers/hbs");
 
 // Handlebars
 app.engine(
   ".hbs",
-  exphbs({ helpers: { formatDate }, defaultLayout: "main", extname: ".hbs" })
+  exphbs({
+    helpers: { formatDate, truncate, stripTags, editIcon },
+    defaultLayout: "main",
+    extname: ".hbs",
+  })
 );
 app.set("view engine", ".hbs");
 
@@ -53,6 +57,15 @@ app.use(
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Set global variable
+app.use(function (req, res, next) {
+  // Get user object from request after logged in
+  // Save it as response.locals global variable, namely "loggedUser"
+  // so it can be used in hbs templates
+  res.locals.loggedUser = req.user || null;
+  next();
+});
 
 // Static folder
 // __dirname = current folder of app.js

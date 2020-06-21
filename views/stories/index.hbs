@@ -1,14 +1,19 @@
 <h1>Stories</h1>
 <div class="row">
+    {{!-- In routes/stories.js, stories objects queried from MongoDB are passed in during render --}}
     {{#each stories}}
     <div class="col s12 m4">
         <div class="card">
             <div class="card-image">
-                {{!-- todo: editIcon --}}
+                {{!-- NOTE the TRIPLE Curly braces to rendor the html tags instead of string display --}}
+                {{!-- user = value of user attribute within the story object --}}
+                {{!-- ../loggedUser = global variable from expressjs, defined in app.js --}}
+                {{!-- _id = value of _id attribute within the story object --}}
+                {{{editIcon user ../loggedUser _id}}}
             </div>
             <div class="card-content center-align">
                 <h5>{{title}}</h5>
-                <p>{{body}}</p>
+                <p>{{stripTags (truncate body 150)}}</p>
                 <br>
                 <div class="chip">
                     <img src="{{user.image}}" alt="">
