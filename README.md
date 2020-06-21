@@ -24,7 +24,7 @@ Node.js App From Scratch https://www.youtube.com/watch?v=SBvmnHTQIPY
   - Model schema definition in models folder
   - config/db.js define module for DB connection. Connect DB in app.js
 - [Passport](http://www.passportjs.org/) with [passport-google-oauth-20](http://www.passportjs.org/packages/passport-google-oauth20/) strategy for Google OAuth 2.0 login
-  - Create Project, Enable OAuth API, Create Credential, obtain Client ID and Client Secret from [Google Cloud Console](https://console.cloud.google.com/){:target="\_blank"}
+  - Create Project, Enable OAuth API, Create Credential, obtain Client ID and Client Secret from [Google Cloud Console](https://console.cloud.google.com/)
   - In config/passport.js, define module to initialize Google Strategy
   - serializeUser and deserializeUser functions ensure user object in req.user. See [here](https://stackoverflow.com/questions/27637609/understanding-passport-serialize-deserialize) for explanation
   - Define auth route for authenticate, callback and logout URLs
