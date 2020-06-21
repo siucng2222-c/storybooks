@@ -74,6 +74,32 @@ router.get("/stories/:id", ensureAuth, async (req, res) => {
   }
 });
 
+// @desc    Show stories by User
+// @route   GET /stories/user/:userId
+router.get("/stories/user/:userId", ensureAuth, async (req, res) => {
+  try {
+    const stories = await Story.find({
+      user: req.params.userId,
+      status: "public",
+    })
+      .populate("user")
+      .sort({ createdAt: "desc" })
+      .lean();
+
+    if (!stories) {
+      return res.render("error/404");
+    }
+
+    // pass the stories to hbs template
+    res.render("stories/index", {
+      stories,
+    });
+  } catch (error) {
+    console.error(error);
+    res.render("error/500");
+  }
+});
+
 // @desc    Process add form
 // @route   POST /stories
 router.post("/stories", ensureAuth, async (req, res) => {
