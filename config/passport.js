@@ -36,6 +36,7 @@ module.exports = function (passport) {
     )
   );
 
+  // https://stackoverflow.com/questions/27637609/understanding-passport-serialize-deserialize
   passport.serializeUser((user, done) => done(null, user.id));
 
   passport.deserializeUser((id, done) => {
