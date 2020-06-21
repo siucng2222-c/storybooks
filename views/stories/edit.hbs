@@ -1,6 +1,10 @@
 <h3>Edit Story</h3>
 <div class="row">
-    <form action="/stories" method="POST" class="col s12">
+    <form action="/stories/{{story._id}}" method="POST" class="col s12">
+        {{!-- Use with method-override express middleware in app.js --}}
+        {{!-- Override the form POST with other HTTP method, e.g. PUT as below --}}
+        {{!-- Alternatively, we might use frontend javascript for this purpose --}}
+        <input type="hidden" name="_method" value="PUT">
         <div class="row">
             <div class="input-field">
                 <input type="text" name="title" id="title" value="{{story.title}}">

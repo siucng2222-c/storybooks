@@ -68,4 +68,35 @@ router.post("/stories", ensureAuth, async (req, res) => {
   }
 });
 
+// @desc    Process edit form
+// @route   PUT /stories/:id
+router.put("/stories/:id", ensureAuth, async (req, res) => {
+  try {
+    // app.js add urlencoded and json middlewares
+    // to convert request body into JSON
+    // and here add the logged in user's id into JSON body's "user" attribute
+
+    let story = await Story.findById(req.params.id).lean();
+    if (!story) {
+      return res.render("error/404");
+    }
+
+    // Verify story belongs to logged in user
+    if (story.user != req.user.id) {
+      // If no, redirect user to public stories page
+      res.redirect("/stories");
+    } else {
+      // If yes, update story to mongoDB
+      story = await Story.findOneAndUpdate({ _id: req.params.id }, req.body, {
+        new: true,
+        runValidators: true,
+      });
+      res.redirect("/dashboard");
+    }
+  } catch (error) {
+    console.error(error);
+    res.render("error/500");
+  }
+});
+
 module.exports = router;
