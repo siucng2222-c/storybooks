@@ -10,6 +10,24 @@ router.get("/stories/add", ensureAuth, (req, res) => {
   res.render("stories/add");
 });
 
+// @desc    Show all stories
+// @route   GET /stories
+router.get("/stories", ensureAuth, async (req, res) => {
+  try {
+    const stories = await Story.find({ status: "public" })
+      .populate("user")
+      .sort({ createdAt: "desc" })
+      .lean();
+
+    res.render("stories/index", {
+      stories,
+    });
+  } catch (error) {
+    console.error(error);
+    res.render("error/500");
+  }
+});
+
 // @desc    Process add form
 // @route   POST /stories
 router.post("/stories", ensureAuth, async (req, res) => {
